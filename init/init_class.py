@@ -1,5 +1,4 @@
 import pygame
-import numpy as np
 from math import sqrt
 class COLORS:
     def __init__(self):
@@ -58,11 +57,11 @@ class input_circle:
         self.kniess = kniess
         self.screen = screen
 
-class draw_circle(input_circle):
-    def __init__(self):
-        super().__init__(self,x_center,y_center,r,color,kniess,screen)
-    def show_circle(self):
-        pygame.draw.circle(self.screen,self.color,(x_center + 50, 600 - y_center),kniess)
+class draw_circle(input_circle): ...
+    # def __init__(self):
+    #     super().__init__(self,x_center,y_center,r,color,kniess,screen)
+    # def show_circle(self):
+    #     pygame.draw.circle(self.screen,self.color,(x_center + 50, 600 - y_center),kniess)
         
 class input_rect:
     def __init__(self,begin1,end1,w,h,color,kniess,screen):
@@ -74,11 +73,11 @@ class input_rect:
         self.kniess = kniess
         self.screen = screen
 
-class draw_rect(input_rect):
-    def __init__(self):
-        super().__init__(self,begin1,end1,w,h,color,kniess,screen)
-    def show_rect(self):
-        pygame.draw.rect(self.screen,self.color,(self.begin1, self.end1, self.w, self.h),self.kniess)
+class draw_rect(input_rect): ...
+    # def __init__(self):
+    #     super().__init__(self,begin1,end1,w,h,color,kniess,screen)
+    # def show_rect(self):
+    #     pygame.draw.rect(self.screen,self.color,(self.begin1, self.end1, self.w, self.h),self.kniess)
 
 def prefix_sum():
     ...
@@ -162,14 +161,13 @@ def upper_bound(arr,x):
     return ans
 
 def calc_distance(p1,p2):
-    # if (len(p1) != 0 and len(p2) != 0):
     return sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
 
 def search_and_distance(points,clusters):
     labels_values = []
     labels = []
     index_distance = []
-    print(points)
+    # print(points)
     for i in points: #O(n)
         min_points = []
         for c in clusters: # O(n)
@@ -182,3 +180,10 @@ def search_and_distance(points,clusters):
         labels.append(index_labels)
         index_distance.append([index_labels,min_points[index_labels]])
     return (labels_values, labels, index_distance)
+
+def prefix_sum(arr):
+    arr_new = [0]*len(arr)
+    arr_new[0] = arr[0][1]
+    for i in range(1,len(arr)):
+        arr_new[i] = arr_new[i - 1] + arr[i][1]
+    return arr_new      

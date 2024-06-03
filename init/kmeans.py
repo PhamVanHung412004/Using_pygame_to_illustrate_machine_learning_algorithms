@@ -1,15 +1,13 @@
 # import pygame
 from random import randint
-import math
 from sklearn.cluster import KMeans
-from init_class import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,calc_distance,search_and_distance,np
+from init_class import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum
 
 colors = COLORS()
 rect_black = points_black_rect()
 rect_white = points_white_circle()
 COLORS_LABELS = colors_init(colors)
 
-   
 class Draw_point:
     def __init__(self,point,WHITE,BLACK,label,COlOR):
         self.point = point
@@ -83,30 +81,19 @@ height = 1200
 witd = 700
 screen = pygame.display.set_mode((height,witd))
 clock = pygame.time.Clock()
-
 runing = True
 points = []
 clusters = []
 labels = []
 labels_values = []
-ans = []
 k = 0
 error = 0
-
-
-check_new = []
-list_error = []
 prefix_sum_x = []
 prefix_sum_y = []
-error = 0
-error_1 = 0
 index_distance = []
-test_mid = []
-sum_x_alo = []
-sum_ys_alo = []
-total_error_alo = []
-check = False
-
+arr1 = []
+arr2 = []
+arr3 = [] 
 
 while runing:
     clock.tick(60)
@@ -173,118 +160,94 @@ while runing:
 
             #button run    
             elif (1000 <= x_mouse <= 1090 and 610 <= y_mouse <= 660):
-                # try:
-                print("Run")
-                labels = []
-                labels_values = []
-                prefix_sum_x = []
-                prefix_sum_y = []
-                index_distance = []
-                error = 0                    
+                try:
+                    print("Run")
+                    labels = []
+                    labels_values = []
+                    prefix_sum_x = []
+                    prefix_sum_y = []
+                    index_distance = []
+                    error = int(1e7)                    
 
-                if (len(clusters) == 0):
-                    continue
-                
-                (labels_values, labels, index_distance) = search_and_distance(points,clusters)
-                
-                #=> O(n^2)
-                labels_values.sort() # O(nlog(n))
-                index_distance.sort() # O(nlog(n))
-                print("index_distance: ",str(index_distance))
-                # print(index_distance)
-                value_init = labels_values[0][1]
-
-                prefix_sum_x = [0] * len(labels_values) # O(n)
-                prefix_sum_y = [0] * len(labels_values) # O(n)
-
-                prefix_sum_x[0] = value_init[0]
-                prefix_sum_y[0] = value_init[1] 
-
-                for i in range(1,len(labels_values)): # O(n)
-                    value = labels_values[i][1]
-                    prefix_sum_x[i] = prefix_sum_x[i - 1] + value[0] 
-                    prefix_sum_y[i] = prefix_sum_y[i - 1] + value[1]
-                    index_distance[i][1] += index_distance[i - 1][1]
+                    if (len(clusters) == 0):
+                        continue
                     
-                for i in range(0,7): # O(m)
-                    first_value = lower_bound(labels_values,i) # O(log(n))
-                    second_value = upper_bound(labels_values,i) # O(log(n))
+                    (labels_values, labels, index_distance) = search_and_distance(points,clusters)
                     
-                    if (first_value != -1 and second_value != -1 and second_value - first_value + 1 > 0):
-                        if (first_value == 0):
-                            ans = cacl_point_mid(
-                                prefix_sum_x[second_value],
-                                prefix_sum_y[second_value],
-                                second_value - first_value + 1
-                            )
-                            error += index_distance[second_value][1]
-                            clusters[i] = ans
-                        else:
-                            ans = cacl_point_mid(
-                                prefix_sum_x[second_value] - prefix_sum_x[first_value - 1],
-                                prefix_sum_y[second_value] - prefix_sum_y[first_value - 1],
-                                second_value - first_value + 1
-                            )
-                            error += index_distance[second_value][1] - index_distance[first_value - 1][1]
-                            clusters[i] = ans
+                    #=> O(n^2)
+                    labels_values.sort() # O(nlog(n))
+                    index_distance.sort() # O(nlog(n))
+                    value_init = labels_values[0][1]
+
+                    prefix_sum_x = [0] * len(labels_values) # O(n)
+                    prefix_sum_y = [0] * len(labels_values) # O(n)
+
+                    prefix_sum_x[0] = value_init[0]
+                    prefix_sum_y[0] = value_init[1] 
+
+                    for i in range(1,len(labels_values)): # O(n)
+                        value = labels_values[i][1]
+                        prefix_sum_x[i] = prefix_sum_x[i - 1] + value[0] 
+                        prefix_sum_y[i] = prefix_sum_y[i - 1] + value[1]
+                        index_distance[i][1] += index_distance[i - 1][1]
+                        
+                    for i in range(0,7): # O(m)
+                        first_value = lower_bound(labels_values,i) # O(log(n))
+                        second_value = upper_bound(labels_values,i) # O(log(n))
+                        
+                        if (first_value != -1 and second_value != -1 and second_value - first_value + 1 > 0):
+                            if (first_value == 0):
+                                ans = cacl_point_mid(
+                                    prefix_sum_x[second_value],
+                                    prefix_sum_y[second_value],
+                                    second_value - first_value + 1
+                                )
+                                error = min(error,index_distance[second_value][1])
+                                clusters[i] = ans
+                            else:
+                                ans = cacl_point_mid(
+                                    prefix_sum_x[second_value] - prefix_sum_x[first_value - 1],
+                                    prefix_sum_y[second_value] - prefix_sum_y[first_value - 1],
+                                    second_value - first_value + 1
+                                )
+                                error = min(error,index_distance[second_value][1] - index_distance[first_value - 1][1])
+                                clusters[i] = ans
                     #=> O(mlog(n))
                     # n = 100000
                     # m = 1000
                     #total big o nation = O(n^2) + O(nlog(n)) + O(nlog(n)) + O(n) + O(n) + O(n) + O(m * 2 * log(n))
-                # except:
-                #     pass
-
-
-            
-
+                except:
+                    print("Error")
+                    pass
             #Button ALGORITHM
             #375,610,200,50
             elif ( 375 <= x_mouse <= 575 and 610 <= y_mouse <= 660):
-                # try:
-                ans = []
-                sum_x_alo = []
-                sum_y_alo = []
-                total_error_alo = []
-                error = 0   
-                print("llll")                 
-                print(clusters)
-                # points = np.array(points)
-                print("\nAlgorithm")
-                kmeans = KMeans(n_clusters=k).fit(points)
-                labels = kmeans.predict(points)
-                # print(labels)
-                clusters = kmeans.cluster_centers_
-                print("clusters: ",str(clusters))
-                for i in range(len(labels)):
-                    ans.append([labels[i],points[i]])
-                ans.sort()
+                try:
+                    error = int(1e7)
+                    arr1 = []
+                    arr2 = []
+                    arr3 = [] 
+                    print("\nAlgorithm")
+                    kmeans = KMeans(n_clusters=k).fit(points)
+                    labels = kmeans.predict(points)
+                    clusters = kmeans.cluster_centers_
+                    
+                    (arr1, arr2, arr3) = search_and_distance(points,clusters)
+                    arr3.sort()
+                    arr2 = list(set(arr2))
 
-                print("ans", str(ans))
-
-                # sum_x_alo = [0] * len(labels)    
-                # sum_y_alo = [0] * len(labels)    
-                
-                # vl = ans[0][1]
-                
-                # sum_x_alo[0] = vl[0] 
-                # sum_y_alo[0] = vl[1]
-
-                # for i in range(1,len(ans)):
-                #     value = ans[i][1]
-                #     sum_x_alo[i] = sum_x_alo[i - 1] + value[0]
-                #     sum_y_alo[i] = sum_y_alo[i - 1] + value[1]
-
-                # for i in range(k):
-                #     first_value = lower_bound(ans,i)
-                #     second_value = upper_bound(ans,i)
-                #     if (first_value != -1 and second_value != -1 and second_value - first_value + 1 > 0):
-                #         if (first_value == 0):
-                #             error += index_distance[second_value][1]
-
-                #         else:
-                #             error += index_distance[second_value][1] - index_distance[first_value - 1][1]
-                # except:
-                #     pass
+                    total_error = prefix_sum(arr3)
+                    for i in range(len(arr2)):
+                        l = lower_bound(arr3,arr2[i])
+                        r = upper_bound(arr3,arr2[i])
+                        if (l != -1 and r != -1):
+                            if (l == 0):
+                                error = min(error,total_error[r])
+                            else:
+                                error = min(error,total_error[r] - total_error[l - 1])
+                except:
+                    print("Error")
+                    pass
             
             elif (585 <= x_mouse <= 785 and 610 <= x_mouse <= 660):
                 continue
@@ -292,25 +255,23 @@ while runing:
             #Button reset
             elif (790 <= x_mouse <= 990 and 610 <= y_mouse <= 660):
                 try: 
-                    ans = []
                     points = []
                     clusters = []
                     labels = []
-                    value_labels = []
                     index_distance = []
                     prefix_sum_x = []
-                    prefix_sum_x = []
-                    sum_x_alo = []
-                    sum_y_alo = []
+                    prefix_sum_y = []
                     error = 0
                     k = 0
-
+                    arr1 = []
+                    arr2 = []
+                    arr3 = []
                 except:
+                    print("Error")
                     pass
             else:
+                print("Error")
                 continue
-           
-    
     k_button = font_1.render("K = " + str(k), True, colors.BLACK)          
     dau_cong = font_1.render("+", True, colors.BLACK)
     dau_tru = font_1.render("-", True, colors.BLACK)

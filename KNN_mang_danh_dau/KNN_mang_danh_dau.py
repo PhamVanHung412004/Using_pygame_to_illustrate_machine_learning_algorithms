@@ -204,8 +204,6 @@ points = []
 
 append_poinst = []
 
-
-# test = 0
 length = 0
 clock = pygame.time.Clock()
 while runing:
