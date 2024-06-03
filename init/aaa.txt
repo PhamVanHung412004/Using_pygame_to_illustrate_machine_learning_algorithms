@@ -1,0 +1,27 @@
+pygame.draw.rect(screen,self.BLACK,)
+#         pygame.draw.rect(screen,self.WHITE,(55,615,90,30))
+
+#         pygame.draw.rect(screen,self.BLACK,   )
+#         pygame.draw.rect(screen,self.WHITE,(55,660,40,30))
+
+#         pygame.draw.rect(screen,self.WHITE,(105,660,40,30))
+
+#     def Draw_Random(self):
+#         pygame.draw.rect(screen,self.BLACK,(165,610,200,50))
+#         pygame.draw.rect(screen,self.WHITE,(170,615,190,40))
+        
+#     def Draw_Algorithm(self):
+#         pygame.draw.rect(screen,self.BLACK,(375,610,200,50))
+#         pygame.draw.rect(screen,self.WHITE,(380,615,190,40))
+        
+#     def Draw_Error(self):
+#         pygame.draw.rect(screen,self.BLACK,(585,610,200,50))
+#         pygame.draw.rect(screen,self.WHITE,(590,615,190,40))        
+    
+#     def Draw_Reset(self):
+#         pygame.draw.rect(screen,self.BLACK,(790,610,200,50))
+#         pygame.draw.rect(screen,self.WHITE,(795,615,190,40))        
+
+#     def Draw_Run(self):
+#         pygame.draw.rect(screen,self.BLACK,(1000,610,90,50))
+#         pygame.draw.rect(screen,self.WHITE,(1005,615,80,40))        
