@@ -1,5 +1,8 @@
 import pygame
 from math import sqrt
+
+const_int_mod = int(10**4)
+
 class COLORS:
     def __init__(self):
         self.BACKGROUND = (255,255,255)
@@ -94,6 +97,60 @@ def points_white_circle():
 
 def COLORS_LABELS():
     ...
+
+def Linear_Search(arr,x):
+    list_index = []
+    for i in range(len(arr)):
+        if (arr[i][0] == x):
+            list_index.append(arr[i][1])
+    return list_index
+
+def Binary_Search(arr,x):
+    ans = -1
+    r = 0
+    l = len(arr) - 1
+    while l <= r:
+        mid = int((l + r)/2)
+        if (arr[mid][0] == x):
+            return mid
+        elif (arr[mid][0] < x):
+            l = mid + 1
+        else:
+            r = mid - 1
+    return ans
+
+def check_value(arr1,arr2):
+    label = -1
+    for i in range(len(arr1)):
+        min_distance = 10**9
+        index = Binary_Search(arr2,arr1[i])
+        if (min_distance > arr2[index][1]):
+            min_distance = arr2[index][1]
+            label = arr1[i]
+    if (label != -1):
+        return label
+
+def array_counts(arr,K_NN):
+    counts = [0]*const_int_mod
+    labels = []
+    check = set()
+    distance_labels = []
+    for i in range(K_NN):
+        labels.append(arr[i][1])
+        if (arr[i][1] not in check):
+            distance_labels.append([arr[i][1],arr[i][0]])
+            check.add(arr[i][1])
+    
+    begin = const_int_mod
+    end = 0
+
+    for i in range(len(labels)):
+        counts[labels[i]] += 1
+        begin = min(begin,labels[i])
+        end = max(end,labels[i])
+
+    return (begin,end,counts,distance_labels)
+
 
 def lower_bound(arr,x):
     ans = -1

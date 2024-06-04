@@ -7,7 +7,7 @@ colors = COLORS()
 rect_black = points_black_rect()
 rect_white = points_white_circle()
 COLORS_LABELS = colors_init(colors)
-
+const = int(1e4)
 class Draw_point:
     def __init__(self,point,WHITE,BLACK,label,COlOR):
         self.point = point
@@ -94,6 +94,12 @@ index_distance = []
 arr1 = []
 arr2 = []
 arr3 = [] 
+font = pygame.font.SysFont('sans', 20)
+font11 = pygame.font.SysFont('sans', 30)
+font_1 = pygame.font.SysFont('sans', 40)
+font_2 = pygame.font.SysFont('sans', 50) 
+# error_min = [int(1e9)] * const
+# error_min[0] = 0
 
 while runing:
     clock.tick(60)
@@ -101,11 +107,6 @@ while runing:
     x_mouse,y_mouse = pygame.mouse.get_pos()
     
     #Font
-    font = pygame.font.SysFont('sans', 20)
-    font11 = pygame.font.SysFont('sans', 30)
-    font_1 = pygame.font.SysFont('sans', 40)
-    font_2 = pygame.font.SysFont('sans', 50)  
-
     up = font.render("▲", True, colors.BLACK)
     ngang = font.render("►", True, colors.BLACK)
 
@@ -167,7 +168,7 @@ while runing:
                     prefix_sum_x = []
                     prefix_sum_y = []
                     index_distance = []
-                    error = int(1e7)                    
+                    error = 0                    
 
                     if (len(clusters) == 0):
                         continue
@@ -202,7 +203,7 @@ while runing:
                                     prefix_sum_y[second_value],
                                     second_value - first_value + 1
                                 )
-                                error = min(error,index_distance[second_value][1])
+                                error += index_distance[second_value][1]
                                 clusters[i] = ans
                             else:
                                 ans = cacl_point_mid(
@@ -210,20 +211,16 @@ while runing:
                                     prefix_sum_y[second_value] - prefix_sum_y[first_value - 1],
                                     second_value - first_value + 1
                                 )
-                                error = min(error,index_distance[second_value][1] - index_distance[first_value - 1][1])
+                                error += index_distance[second_value][1] - index_distance[first_value - 1][1]
                                 clusters[i] = ans
-                    #=> O(mlog(n))
-                    # n = 100000
-                    # m = 1000
-                    #total big o nation = O(n^2) + O(nlog(n)) + O(nlog(n)) + O(n) + O(n) + O(n) + O(m * 2 * log(n))
                 except:
                     print("Error")
-                    pass
+                    break
+
             #Button ALGORITHM
-            #375,610,200,50
             elif ( 375 <= x_mouse <= 575 and 610 <= y_mouse <= 660):
                 try:
-                    error = int(1e7)
+                    error = 0
                     arr1 = []
                     arr2 = []
                     arr3 = [] 
@@ -242,13 +239,13 @@ while runing:
                         r = upper_bound(arr3,arr2[i])
                         if (l != -1 and r != -1):
                             if (l == 0):
-                                error = min(error,total_error[r])
+                                error += total_error[r]
                             else:
-                                error = min(error,total_error[r] - total_error[l - 1])
+                                error += total_error[r] - total_error[l - 1]
                 except:
                     print("Error")
-                    pass
-            
+                    break
+                    
             elif (585 <= x_mouse <= 785 and 610 <= x_mouse <= 660):
                 continue
             
@@ -268,7 +265,8 @@ while runing:
                     arr3 = []
                 except:
                     print("Error")
-                    pass
+                    break
+                    
             else:
                 print("Error")
                 continue
@@ -277,6 +275,8 @@ while runing:
     dau_tru = font_1.render("-", True, colors.BLACK)
     random_button = font_1.render("RANDOM", True, colors.BLACK)
     algorithm_button = font11.render("ALGORITHM", True, colors.BLACK)
+    # if (error_min == []):
+
     error_button = font11.render("ERROR = "  + str(int(error)), True, colors.BLACK)
     reset_button = font_1.render("RESET" , True, colors.BLACK)
     run_button = font_1.render("RUN" , True, colors.BLACK)
