@@ -1,8 +1,19 @@
-from init_class import lower_bound,upper_bound
+# import cv2
 
-a = [[0, [161.0, 393.0]], [0, [204.0, 355.0]], [0, [209.0, 390.0]], [0, [220.0, 397.0]], [0, [242.0, 395.0]], [0, [253.0, 425.0]], [1, [693.0, 405.0]], [1, [759.0, 184.0]], [1, [777.0, 179.0]], [1, [786.0, 391.0]], [1, [791.0, 439.0]], [1, [804.0, 411.0]], [2, [210.0, 149.0]], [2, [269.0, 175.0]], [2, [305.0, 144.0]], [3, [740.0, 173.0]]]
+# # Read an image from file
+# input_image_path = 'input_image.jpg'  # specify the path to your input image
+# image = cv2.imread(input_image_path)
 
-for i in range(0,7):
-    r = lower_bound(a,i)
-    l = upper_bound(a,i)
-    print(l,r)
+# # Check if the image was loaded properly
+# if image is None:
+#     print("Error: Could not load image")
+# else:
+#     # Specify the output path
+#     output_image_path = 'output_image.png'  # specify the path for the output image
+
+#     # Save the image to the new file
+#     cv2.imwrite(output_image_path, image)
+
+#     print(f"Image saved to {output_image_path}")
+
+print('hll')

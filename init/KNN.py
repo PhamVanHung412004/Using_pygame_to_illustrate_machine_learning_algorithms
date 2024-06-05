@@ -1,34 +1,9 @@
 from sklearn.cluster import KMeans
-from init_class import pygame,calc_distance,array_counts,Linear_Search,check_value,Draw_ox_oy,COLORS,colors_init
+from init_class import pygame,calc_distance,array_counts,Linear_Search,check_value,Draw_ox_oy,COLORS,colors_init,Font,Show_mouse
 
 colors = COLORS()
 COLORS_LABELS = colors_init(colors)
-
-# class ox_oy:
-#     def __init__(self,ox1,ox2,ox3,ox4,oy1,oy2,oy3,oy4,BLACK,up,ngang):
-#         self.ox1 = ox1
-#         self.ox2 = ox2
-#         self.ox3 = ox3
-#         self.ox4 = ox4
-#         self.oy1 = oy1
-#         self.oy2 = oy2
-#         self.oy3 = oy3
-#         self.oy4 = oy4
-#         self.BLACK = BLACK
-#         self.up = up
-#         self.ngang = ngang
-
-#     def draw_ox(self):
-#         return pygame.draw.line(screen,self.BLACK,(self.ox1,self.ox2),(self.ox3,self.ox4),3)
-
-#     def draw_oy(self):
-#         return pygame.draw.line(screen,self.BLACK,(self.oy1,self.oy2),(self.oy3,self.oy4),3)
-    
-#     def draw_up(self):
-#         return screen.blit(self.up,(44,32))
-    
-#     def draw_ngang(self):
-#         return screen.blit(self.ngang,(1100,588))
+fonts = Font()
 
 class show_cluster:
     def __init__(self,BLACK,
@@ -108,29 +83,6 @@ height = 1200
 witd = 700
 screen = pygame.display.set_mode((height,witd))
 
-# BLACKGROUP = (255,255,255)
-# BLACK = (0,0,0)
-# WHITE = (255,255,255)
-# GREY = (192,192,192)
-# RED = (255,0,0)
-# GREEN = (0,102,51)
-# BLUE = (0,0,153)
-# YELLOW = (255,255,0)
-# PURPLE = (255,0,255)
-# SKY = (0,255,255)
-# ORANGE = (255,125,25)
-# GRAPE = (100,25,125)
-# GRASS = (55,155,65)
-
-# COLORS_LABELS = {0 : GREEN,
-#                  1 : BLUE,
-#                  2 : YELLOW,
-#                  3 : PURPLE,
-#                  4 : SKY,
-#                  5 : ORANGE,
-#                  6 : GRAPE,
-#                  7 : GRASS}
-
 test = 0
 labels = []
 clusters = []
@@ -142,22 +94,20 @@ results = []
 runing = True
 points = []
 clock = pygame.time.Clock()
+font = pygame.font.SysFont('sans', 20)
+font1 = pygame.font.SysFont('sans', 30)
+font2 = pygame.font.SysFont('sans', 40)
+font3 = pygame.font.SysFont('sans', 50) 
+check = False
 while runing:
     clock.tick(60)
-    screen.fill(colors.BLACKGROUP)
+    screen.fill(colors.BACKGROUND)
     x_mouse , y_mouse = pygame.mouse.get_pos()
     
-
+    show_mouse = Show_mouse(x_mouse, y_mouse, font,colors.BLACK,screen)
+    if (50 <= x_mouse <= 1100 and 50 <= y_mouse <= 600):
+        show_mouse.show()
     
-
-    # x_test = x_mouse
-    # y_test = y_mouse
-
-    font = pygame.font.SysFont('sans', 20)
-    font1 = pygame.font.SysFont('sans', 30)
-    font2 = pygame.font.SysFont('sans', 40)
-    font3 = pygame.font.SysFont('sans', 50)  
-
     up = font.render("▲", True, colors.BLACK)
     ngang = font.render("►", True, colors.BLACK)
     x = font1.render("X", True, colors.BLACK)
@@ -166,8 +116,7 @@ while runing:
 
     Run_kmeans_button = font.render("RUN_KMEANS", True, colors.BLACK)
     labelss = font.render("LABELS", True, colors.BLACK)
-    using_kmeans = font2.render("USE KMEANS TO MAKE LABELS", True, colors.BLACK)
-
+    using_kmeans = font2.render("IMG degis", True, colors.BLACK)
     k_button = font2.render("K = " + str(K_knn), True, colors.BLACK)
     K_Kmeans_button = font2.render("K = " + str(K_Kmeans), True, colors.BLACK)
     dau_cong = font2.render("+", True, colors.BLACK)
@@ -194,7 +143,10 @@ while runing:
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            # import test
+            check = True
             runing = False
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             if (50 <= x_mouse <= 1100 and 50 <= y_mouse <= 600):
                 if (test != 0):
@@ -290,16 +242,16 @@ while runing:
                     break                        
                    
     for i in range(len(points)):
-        pygame.draw.circle(screen,BLACK,(points[i][0] + 50,600 - points[i][1]),8)
-        pygame.draw.circle(screen,WHITE,(points[i][0] + 50,600 - points[i][1]),7)
+        pygame.draw.circle(screen,colors.BLACK,(points[i][0] + 50,600 - points[i][1]),8)
+        pygame.draw.circle(screen,colors.WHITE,(points[i][0] + 50,600 - points[i][1]),7)
 
     if (len(labels) != 0):
         for i in range(len(points)):
             pygame.draw.circle(screen,COLORS_LABELS[labels[i]],(points[i][0] + 50,600 - points[i][1]),7)
     if (len(list_labels_news) != 0):
         for i in range(len(list_labels_news)):
-            pygame.draw.circle(screen,BLACK,(list_labels_news[i][0] + 50,600 - list_labels_news[i][1]),8)
-            pygame.draw.circle(screen,WHITE,(list_labels_news[i][0] + 50,600 - list_labels_news[i][1]),7)
+            pygame.draw.circle(screen,colors.BLACK,(list_labels_news[i][0] + 50,600 - list_labels_news[i][1]),8)
+            pygame.draw.circle(screen,colors.WHITE,(list_labels_news[i][0] + 50,600 - list_labels_news[i][1]),7)
         
     if (len(results) != 0):
         for i in range(len(results)):
@@ -307,3 +259,6 @@ while runing:
     
     pygame.display.flip()
 pygame.quit()
+
+if (check):
+    import backgroup2

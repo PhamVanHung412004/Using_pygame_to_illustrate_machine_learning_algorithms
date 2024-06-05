@@ -1,6 +1,5 @@
 import pygame
 from math import sqrt
-
 const_int_mod = int(10**4)
 
 class COLORS:
@@ -82,10 +81,13 @@ class draw_rect(input_rect): ...
     # def show_rect(self):
     #     pygame.draw.rect(self.screen,self.color,(self.begin1, self.end1, self.w, self.h),self.kniess)
 
+class Font: ...
+    # def __init__(self):
 def prefix_sum():
     ...
 
 # color = COLORS()
+
 
 def points_black_rect():
     rect_black = [(50,610,100,40),(50,655,100,40),(165,610,200,50),(375,610,200,50),(585,610,200,50),(790,610,200,50),(1000,610,90,50)]
@@ -191,6 +193,7 @@ def colors_init(colors):
                 6 : colors.GRAPE,
                 7 : colors.GRASS}
     return colorss
+
 def upper_bound(arr,x):
     ans = -1
     l = 0
