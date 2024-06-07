@@ -1,7 +1,9 @@
 import pygame
 from math import sqrt
 const_int_mod = int(10**4)
-
+height = 1400
+witd = 750
+screen = pygame.display.set_mode((height,witd))
 class COLORS:
     def __init__(self):
         self.BACKGROUND = (255,255,255)
@@ -50,16 +52,30 @@ class Show_mouse:
         text_mouse = self.font_mouse.render("(" + "x = " + str((self.x_mouse - 50)) + "," + "y = " + str(abs(self.y_mouse-600)) + ")",True,self.BLACK)
         self.screen.blit(text_mouse, (self.x_mouse + 10, self.y_mouse))
 
-class input_circle:
-    def __init__(self,x_center,y_center,r,color,kniess,screen):
-        self.x_center = x_center
-        self.y_center = y_center
-        self.r = r
-        self.color = color
-        self.kniess = kniess
-        self.screen = screen
+class draw_rect_backgroud:
+    def __init__(self,x,y,w,h,colors):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.colors = colors
 
-class draw_circle(input_circle): ...
+    def show(self):
+        pygame.draw.rect(screen,self.colors.BLACK,(self.x,self.y, self.w, self.h))
+        pygame.draw.rect(screen,self.colors.WHITE,(self.x + 5, self.y + 5, self.w - 10, self.h - 10))
+
+
+
+# class input_circle:
+#     def __init__(self,x_center,y_center,r,color,kniess,screen):
+#         self.x_center = x_center
+#         self.y_center = y_center
+#         self.r = r
+#         self.color = color
+#         self.kniess = kniess
+#         self.screen = screen
+
+# class draw_circle(input_circle): ...
     # def __init__(self):
     #     super().__init__(self,x_center,y_center,r,color,kniess,screen)
     # def show_circle(self):

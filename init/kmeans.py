@@ -1,7 +1,8 @@
 # import pygame
+print("scussflully")
 from random import randint
 from sklearn.cluster import KMeans
-from init_class import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum
+from init_class import Draw_ox_oy,Show_mouse,pygame,COLORS,upper_bound,lower_bound,colors_init,points_black_rect,points_white_circle,search_and_distance,prefix_sum,draw_rect_backgroud,screen
 
 colors = COLORS()
 rect_black = points_black_rect()
@@ -32,17 +33,17 @@ class Draw_point:
             else:
                 pygame.draw.circle(screen,color[labels[i]],(points[i][0] + 50,600 - points[i][1]),8)
 
-class Rectengo:
-    def __init__(self,BLACK,WHITE):     
-        self.BLACK = BLACK
-        self.WHITE = WHITE
-    def Draw(self):
-        for i in range(len(rect_black)):
-            pygame.draw.rect(screen,self.BLACK,rect_black[i])
-            pygame.draw.rect(screen,self.WHITE,rect_white[i])
-        pygame.draw.rect(screen,self.WHITE,(105,660,40,30))     
-        pygame.draw.rect(screen,self.BLACK,(1100,650,90,45))
-        pygame.draw.rect(screen,self.WHITE,(1105,655,80,35))
+# class Rectengo:
+#     def __init__(self,BLACK,WHITE):     
+#         self.BLACK = BLACK
+#         self.WHITE = WHITE
+#     def Draw(self):
+#         for i in range(len(rect_black)):
+#             pygame.draw.rect(screen,self.BLACK,rect_black[i])
+#             pygame.draw.rect(screen,self.WHITE,rect_white[i])
+#         pygame.draw.rect(screen,self.WHITE,(105,660,40,30))     
+#         pygame.draw.rect(screen,self.BLACK,(1100,650,90,45))
+#         pygame.draw.rect(screen,self.WHITE,(1105,655,80,35))
 
 class Name_button:
     def __init__(self,random,algorithm,error,reset,k_button,run_button,dau_cong,dau_tru,img_button):
@@ -57,16 +58,15 @@ class Name_button:
         self.img_button = img_button
     
     def show_name_button(self): 
-        screen.blit(self.k_button,(60, 605))
-        screen.blit(self.dau_cong,(115, 650))
-        screen.blit(self.dau_tru,(65, 650))
-        
-        screen.blit(self.random,(175, 610))
-        screen.blit(self.algorithm,(385, 615))
-        screen.blit(self.error,(595, 615))
-        screen.blit(self.reset,(830, 610))
-        screen.blit(self.run_button,(1010, 610))
-        screen.blit(self.img_button,(1110,650))
+        screen.blit(self.k_button,(1230,25))
+        screen.blit(self.dau_cong,(1255,80))
+        screen.blit(self.dau_tru,(1225 + 80 + 10 + 30,70)) 
+        screen.blit(self.random,(1250,145))
+        screen.blit(self.algorithm,(1235,265))
+        screen.blit(self.error,(1235,330))
+        screen.blit(self.reset,(1270,385))
+        screen.blit(self.run_button,(1280,205))
+        screen.blit(self.img_button,(1280,446))
 
 class Draw_clusters:
     def __init__(self,cluster,COLOR):
@@ -85,9 +85,9 @@ def cacl_point_mid(x,y,cnt):
 
 pygame.init()
 
-height = 1200
-witd = 700
-screen = pygame.display.set_mode((height,witd))
+# height = 1400
+# witd = 750
+# screen = pygame.display.set_mode((height,witd))
 clock = pygame.time.Clock()
 runing = True
 points = []
@@ -103,12 +103,12 @@ arr1 = []
 arr2 = []
 arr3 = [] 
 font = pygame.font.SysFont('sans', 20)
-font11 = pygame.font.SysFont('sans', 30)
-font_1 = pygame.font.SysFont('sans', 40)
-font_2 = pygame.font.SysFont('sans', 50) 
+font1 = pygame.font.SysFont('sans', 30)
+font2 = pygame.font.SysFont('sans', 40)
+font3 = pygame.font.SysFont('sans', 50) 
 # error_min = [int(1e9)] * const
 # error_min[0] = 0
-check = False
+check1 = False
 while runing:
     clock.tick(60)
     screen.fill(colors.BACKGROUND)
@@ -127,39 +127,78 @@ while runing:
     if (50 <= x_mouse <= 1100 and 50 <= y_mouse <= 600):
         show_mouse.show()
         
-    #Draw rect
-    rectengo = Rectengo(colors.BLACK,colors.WHITE)
-    rectengo.Draw()
+    # #Draw rect
+    # rect = draw_rect_backgroud(20,20,1200,700,colors)
+    # rect.show()
+
+   
+    #n_clusters
+    rect = draw_rect_backgroud(1225,20,170,50,colors)
+    rect.show()
+
+    # + -
+    rect = draw_rect_backgroud(1225,80,80,50,colors)
+    rect.show()
+    rect = draw_rect_backgroud(1225 + 80 + 10,80,80,50,colors)
+    rect.show()
+
+   
+    #button random
+    rect = draw_rect_backgroud(1225,140,170,50,colors)
+    rect.show()
+
+    #button run
+    rect = draw_rect_backgroud(1225,200,170,50,colors)
+    rect.show()
+    
+    #button thuat toan
+    rect = draw_rect_backgroud(1225,260,170,50,colors)
+    rect.show()
+    
+    #button error
+    rect = draw_rect_backgroud(1225,320,170,50,colors)
+    rect.show()
+
+    #button reset
+    rect = draw_rect_backgroud(1225,380,170,50,colors)
+    rect.show()
+
+    #button IMG
+    rect = draw_rect_backgroud(1225,440,170,50,colors)
+    rect.show()
+
+    # rectengo = Rectengo(colors.BLACK,colors.WHITE)
+    # rectengo.Draw()
 
     #Event mouse
     for event in pygame.event.get():
         #Button quit
         if (event.type == pygame.QUIT):
             # import backgroup
-            check = True
+            check1 = True
             runing = False  
 
         #Mouse button down
         if (event.type == pygame.MOUSEBUTTONDOWN):
+            #button down
             if (50 <= x_mouse <= 1100 and 50 <= y_mouse <= 600):
                 labels = []
                 x = float(x_mouse - 50)
                 y = float(abs(y_mouse - 600))
                 point = [x,y]
                 points.append(point)
-            
-            # -= 1 clusters
-            elif (55 <= x_mouse <= 95 and 660 <= y_mouse <= 690):
-                if (k > 0):
-                    k -= 1
 
             # += 1 clusters
-            elif (105 <= x_mouse <= 145 and 655 <= y_mouse <= 695):
+            if (1225 <= x_mouse <= 1225 + 80 and 80 <= y_mouse <= 80 + 50):
                 if (k >= 0 and k < 8):
                     k += 1
-
+            # -= 1 clusters
+            elif (1225 + 80 + 10 <= x_mouse <= 1225 + 80 + 10 + 80 and 80 <= y_mouse <= 80 + 50):
+                if (k > 0):
+                    k -= 1
+            
             #button random
-            elif ( 165 <= x_mouse <= 385 and 610 <= y_mouse <= 660):
+            elif (1225 <= x_mouse <= 1225 + 170 and 140 <= y_mouse <= 140 + 50):
                 T = k
                 clusters = []
                 test_mid = []
@@ -169,8 +208,9 @@ while runing:
                     test_mid.append(cluster)
                     T -= 1
 
-            #button run    
-            elif (1000 <= x_mouse <= 1090 and 610 <= y_mouse <= 660):
+            #button run   
+            # 1225,200,170,50 
+            elif (1225 <= x_mouse <= 1225 + 170 and 200 <= y_mouse <= 200 + 50):
                 try:
                     print("Run")
                     labels = []
@@ -228,7 +268,8 @@ while runing:
                     break
 
             #Button ALGORITHM
-            elif ( 375 <= x_mouse <= 575 and 610 <= y_mouse <= 660):
+            #1225,260,170,50
+            elif (1225 <= x_mouse <= 1225 + 170 and 260 <= y_mouse <= 260 + 50):
                 try:
                     error = 0
                     arr1 = []
@@ -260,7 +301,8 @@ while runing:
                 continue
             
             #Button reset
-            elif (790 <= x_mouse <= 990 and 610 <= y_mouse <= 660):
+            #1225,380,170,50
+            elif (1225 <= x_mouse <= 1225 + 170 and 380 <= y_mouse <= 380 + 50):
                 try: 
                     points = []
                     clusters = []
@@ -277,8 +319,8 @@ while runing:
                     print("Error")
                     break
             #button IMG
-            # 1100,650,90,45
-            elif (1100 <= x_mouse <= 1100 + 90 and 650 <= y_mouse <= 650 + 45):
+            # 1225,440,170,50
+            elif (1225 <= x_mouse <= 1225 + 170 and 440 <= y_mouse <= 440 + 50):
                 # import read_dir_img_kmeans
                 import img_kmeans
                 print("IMG")
@@ -286,20 +328,20 @@ while runing:
             else:
                 print("Error")
                 continue
-    k_button = font_1.render("K = " + str(k), True, colors.BLACK)          
-    dau_cong = font_1.render("+", True, colors.BLACK)
-    dau_tru = font_1.render("-", True, colors.BLACK)
-    random_button = font_1.render("RANDOM", True, colors.BLACK)
-    algorithm_button = font11.render("ALGORITHM", True, colors.BLACK)
+    k_button = font1.render("n_clusters = " + str(k), True, colors.BLACK)          
+    dau_cong = font2.render("+", True, colors.BLACK)
+    dau_tru = font3.render("-", True, colors.BLACK)
+    random_button = font1.render("RANDOM", True, colors.BLACK)
+    algorithm_button = font1.render("ALGORITHM", True, colors.BLACK)
     # if (error_min == []):
 
-    error_button = font11.render("ERROR = "  + str(int(error)), True, colors.BLACK)
-    reset_button = font_1.render("RESET" , True, colors.BLACK)
-    run_button = font_1.render("RUN" , True, colors.BLACK)
-    img_button = font_1.render("IMG" , True, colors.BLACK)
-    x = font11.render("X", True, colors.BLACK)
-    y = font11.render("Y", True, colors.BLACK)
-    O = font11.render("0", True, colors.BLACK)
+    error_button = font.render("ERROR = "  + str(int(error)), True, colors.BLACK)
+    reset_button = font1.render("RESET" , True, colors.BLACK)
+    run_button = font1.render("RUN" , True, colors.BLACK)
+    img_button = font1.render("IMG" , True, colors.BLACK)
+    x = font.render("X", True, colors.BLACK)
+    y = font.render("Y", True, colors.BLACK)
+    O = font.render("0", True, colors.BLACK)
     screen.blit(x, (1100, 605))
     screen.blit(y, (30, 35))
     screen.blit(O, (35, 590))
@@ -322,5 +364,5 @@ while runing:
     
     pygame.display.flip()
 pygame.quit()
-if (check):
+if (check1):
     import backgroup1

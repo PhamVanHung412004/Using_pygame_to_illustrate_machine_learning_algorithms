@@ -1,16 +1,40 @@
-# from sklearn.cluster import KMeans
 from init_class import pygame,COLORS
-# from read_dir_img_kmeans import list_img
+from sklearn.cluster import KMeans
+import cv2
 import os
-path_img_kmeans = "D:/init/list_img"
+import numpy
+from functools import cache
+# from init_class import Binary_Search
+#test
+path_test = "D:/Using_pygame_to_illustrate_machine_learning_algorithms/init/img"
+
+file_img_test = "D:/Using_pygame_to_illustrate_machine_learning_algorithms/init/list_img/"
+list_test = os.listdir(path_test)
+
+stt_img = 1
+@cache
+def train_model(index,k):
+    image = cv2.imread(path_test + "/" + list_test[index - 1])
+    width = image.shape[0]
+    height = image.shape[1]
+    image = image.reshape(width*height,3)
+    kmeans = KMeans(n_clusters=k).fit(image)
+
+    labels = kmeans.predict(image)
+    clusters = kmeans.cluster_centers_
+    labels_reshaped = labels.reshape(width, height)
+    img2 = clusters[labels_reshaped]
+    
+    return img2
+
+path_img_kmeans = "G:/My Drive/Colab Notebooks/computer_vison/list_img"
 list_img = os.listdir(path_img_kmeans)
+
 img_new = []
 
-for i in list_img:
-    index_ = i.index(".")
-    # print(i[:index_])
-    img_new.append([int(i[:index_]),i])
-
+for i in range(len(list_img) - 1):
+    index_ = list_img[i].index(".")
+    img_new.append([int(list_img[i][:index_]),list_img[i]])
 img_new.sort()
 
 a = []
@@ -18,24 +42,14 @@ a = []
 for i in range(len(img_new)):
     a.append(img_new[i][1])
 
-# print(img_new)
-
 img_format = [-1]
 for i in range(0,len(a),8):
     tmp = a[i : i + 8]
     tmp.insert(0,-1)
     img_format.append(tmp)
 
-# print(img_format[1][1])
-# print(len(img_format[1]))
-# print(len(img_format[2]))
-# print(len(img_format[3]))
-
-
-# import pygame
-
-file_file = os.listdir("D:/init/img")
-print(file_file)
+file_file = os.listdir("D:/Using_pygame_to_illustrate_machine_learning_algorithms/init/img")
+@cache
 class draw_rect_backgroud:
     def __init__(self,x,y,w,h,colors):
         self.x = x
@@ -47,10 +61,8 @@ class draw_rect_backgroud:
     def show(self):
         pygame.draw.rect(screen,self.colors.BLACK,(self.x,self.y, self.w, self.h))
         pygame.draw.rect(screen,self.colors.WHITE,(self.x + 5, self.y + 5, self.w - 10, self.h - 10))
-    # def black_white(self):
-    #     pygame.draw.rect(screen,self.colors.BLACK,(self.x,self.y, self.w, self.h))
-    #     pygame.draw.rect(screen,self.colors.WHITE,(self.x + 5, self.y + 5, self.w - 10, self.h - 10))
-        
+
+@cache       
 class Text:
     def __init__(self,
                  button_n_clusters,
@@ -70,9 +82,6 @@ class Text:
         self.ngang = ngang
 
     def show_(self):
-        # screen.blit(self.kmeans,(450,170))
-        # screen.blit(self.knn,(500,320))
-        # screen.blit(self.svm,(500,470))
         screen.blit(self.button_n_clusters,(1230,25))
         screen.blit(self.button_plus,(1255,80))
         screen.blit(self.button_tru,(1225 + 80 + 10 + 30,70))
@@ -100,15 +109,22 @@ k = 0
 list_ = []
 shape = (500,500)
 
-path1 = "D:/init/img"
-path2 = "D:/init/list_img"
+path1 = "D:/Using_pygame_to_illustrate_machine_learning_algorithms/init/img"
+path2 = "D:/Using_pygame_to_illustrate_machine_learning_algorithms/init/list_img"
 
-# print(list_img)
-# print(list_img[0])
-# print(path + "/" + list_img[0])
+list_all = []
+list_img_ = []
+
 index = 0
 run_img = False
 run_kmeans = False
+
+cnt = 1
+index_img_dir = []
+img_ouput = []
+
+check111 = False
+
 while runing:
     clock.tick(60)
     screen.fill(colors.BACKGROUND)
@@ -161,62 +177,61 @@ while runing:
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            check111 = True
             runing = False
-
         if event.type == pygame.MOUSEBUTTONDOWN:
 
             if (1225 <= x_mouse <= 1225 + 80 and 80 <= y_mouse <= 80 + 50):
-                if (k >= 0 and k < 8):
+                if (k >= 0):
                     k += 1
-                # run_img = False
-                print("+")
 
-            if (1225 + 80 + 10 <= x_mouse <= 1225 + 80 + 10 + 80 and 80 <= y_mouse <= 80 + 50):
+            elif (1225 + 80 + 10 <= x_mouse <= 1225 + 80 + 10 + 80 and 80 <= y_mouse <= 80 + 50):
                 if (k > 0):
                     k -= 1  
-                # run_img = False
-                print("-")
 
-            if (1225 <= x_mouse <= 1225 + 170 and 140 <= y_mouse <= 140 + 50):
+            elif (1225 <= x_mouse <= 1225 + 170 and 140 <= y_mouse <= 140 + 50):
+                img2 = train_model(index,k)
+                name_img = list_test[index - 1]
+                index_test = name_img.index(".")
+                
+                cv2.imwrite(file_img_test + str(stt_img) + name_img[index_test:], img2)
+                img_ouput.append(str(cnt) + name_img[index_test:])
+                cnt += 1            
+                stt_img += 1
                 run_kmeans = True
-                # pygame.display.flip()
                 print("Run")
 
-            if (1225 <= x_mouse <= 1225 + 170 and 200 <= y_mouse <= 200 + 50):
+            elif (1225 <= x_mouse <= 1225 + 170 and 200 <= y_mouse <= 200 + 50):
                 run_img = True
-                print("Show")
 
-            if (1225 + 60 <= x_mouse <= 1225 + 60 + 50 and 260 <= y_mouse <= 260 + 50):
-                if (index >= 0 and index < len(list_img)):
+            elif (1225 + 60 <= x_mouse <= 1225 + 60 + 50 and 260 <= y_mouse <= 260 + 50):
+                if (index >= 0):
                     index += 1
                 run_img = False
+                run_kmeans = False
+                k = 0
+                if (k == 0 and cnt != 0):
+                    index_img_dir.append(cnt)
                 print("+ menu")
 
-            if (1225 + 60 + 50 <= x_mouse <= 1225 + 60 + 50 + 50 and 260 <= y_mouse <= 260 + 50):
+            elif (1225 + 60 + 50 <= x_mouse <= 1225 + 60 + 50 + 50 and 260 <= y_mouse <= 260 + 50):
                 if (index > 0):
                     index -= 1
                 run_img = False
                 print("- menu")
-    # if (index !=; 0):
-    # print(image
+            else:
+                ...
     if (run_img):
         if (index != 0 and k != -1 and index <= len(list_img)):
-            # print(img_format[index][k])
             image = pygame.image.load(path1 + "/" + file_file[index - 1])
             image = pygame.transform.scale(image, shape)
-            screen.blit(image, (60, 80))
-            #draw line
-            
+            screen.blit(image, (60, 80))            
         else:
             ...
-    if (run_kmeans and k != -1 and k <= 8):
-        print("aaa")
-        if (k > 0 and k <= 8):
-            image1 = pygame.image.load(path2 + "/" + img_format[index][k])
-            image1 = pygame.transform.scale(image1, shape)
-            screen.blit(image1,(665, 80))
-        # run_kmeans = False
-    #     print(run_img)
+    if (run_kmeans):
+        image1 = pygame.image.load(path2 + "/" + img_ouput[len(img_ouput) - 1])
+        image1 = pygame.transform.scale(image1, shape)
+        screen.blit(image1,(665, 80))
 
     button_selection = font1.render(str(index) , True, colors.BLACK)
     button_n_clusters = font1.render("n_clusters = " + str(k) , True, colors.BLACK)
@@ -232,9 +247,6 @@ while runing:
 
     pygame.display.flip()
 pygame.quit()
-
-# if (check_kmeans):
-#     import kmeans
-
-# if (check_knn):
-#     import KNN
+# print(check)
+if (check111):
+    import backgroup3   

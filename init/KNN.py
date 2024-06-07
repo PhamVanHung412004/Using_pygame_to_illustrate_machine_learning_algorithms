@@ -79,8 +79,8 @@ class show_cluster:
         screen.blit(self.using_kmeans, (60,610))
 
 pygame.init()
-height = 1200
-witd = 700
+height = 1400
+witd = 750
 screen = pygame.display.set_mode((height,witd))
 
 test = 0
@@ -248,6 +248,7 @@ while runing:
     if (len(labels) != 0):
         for i in range(len(points)):
             pygame.draw.circle(screen,COLORS_LABELS[labels[i]],(points[i][0] + 50,600 - points[i][1]),7)
+
     if (len(list_labels_news) != 0):
         for i in range(len(list_labels_news)):
             pygame.draw.circle(screen,colors.BLACK,(list_labels_news[i][0] + 50,600 - list_labels_news[i][1]),8)
