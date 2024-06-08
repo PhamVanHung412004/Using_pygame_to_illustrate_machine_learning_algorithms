@@ -33,18 +33,6 @@ class Draw_point:
             else:
                 pygame.draw.circle(screen,color[labels[i]],(points[i][0] + 50,600 - points[i][1]),8)
 
-# class Rectengo:
-#     def __init__(self,BLACK,WHITE):     
-#         self.BLACK = BLACK
-#         self.WHITE = WHITE
-#     def Draw(self):
-#         for i in range(len(rect_black)):
-#             pygame.draw.rect(screen,self.BLACK,rect_black[i])
-#             pygame.draw.rect(screen,self.WHITE,rect_white[i])
-#         pygame.draw.rect(screen,self.WHITE,(105,660,40,30))     
-#         pygame.draw.rect(screen,self.BLACK,(1100,650,90,45))
-#         pygame.draw.rect(screen,self.WHITE,(1105,655,80,35))
-
 class Name_button:
     def __init__(self,random,algorithm,error,reset,k_button,run_button,dau_cong,dau_tru,img_button):
         self.random = random
@@ -114,6 +102,26 @@ while runing:
     screen.fill(colors.BACKGROUND)
     x_mouse,y_mouse = pygame.mouse.get_pos()
     
+    x = font.render("X", True, colors.BLACK)
+    y = font.render("Y", True, colors.BLACK)
+    O = font.render("0", True, colors.BLACK)
+    screen.blit(x, (1100, 605))
+    screen.blit(y, (30, 35))
+    screen.blit(O, (35, 590))
+
+    dau_cong = font2.render("+", True, colors.BLACK)
+    dau_tru = font3.render("-", True, colors.BLACK)
+    random_button = font1.render("RANDOM", True, colors.BLACK)
+    algorithm_button = font1.render("ALGORITHM", True, colors.BLACK)
+
+    reset_button = font1.render("RESET" , True, colors.BLACK)
+    run_button = font1.render("RUN" , True, colors.BLACK)
+    img_button = font1.render("IMG" , True, colors.BLACK)
+
+    title = font3.render("Illustration of kmeans algorithm",True,colors.BLACK)
+    screen.blit(title,(200,600))
+
+
     #Font
     up = font.render("▲", True, colors.BLACK)
     ngang = font.render("►", True, colors.BLACK)
@@ -126,12 +134,7 @@ while runing:
     show_mouse = Show_mouse(x_mouse, y_mouse, font,colors.BLACK,screen)
     if (50 <= x_mouse <= 1100 and 50 <= y_mouse <= 600):
         show_mouse.show()
-        
-    # #Draw rect
-    # rect = draw_rect_backgroud(20,20,1200,700,colors)
-    # rect.show()
 
-   
     #n_clusters
     rect = draw_rect_backgroud(1225,20,170,50,colors)
     rect.show()
@@ -166,10 +169,7 @@ while runing:
     #button IMG
     rect = draw_rect_backgroud(1225,440,170,50,colors)
     rect.show()
-
-    # rectengo = Rectengo(colors.BLACK,colors.WHITE)
-    # rectengo.Draw()
-
+    
     #Event mouse
     for event in pygame.event.get():
         #Button quit
@@ -209,7 +209,6 @@ while runing:
                     T -= 1
 
             #button run   
-            # 1225,200,170,50 
             elif (1225 <= x_mouse <= 1225 + 170 and 200 <= y_mouse <= 200 + 50):
                 try:
                     print("Run")
@@ -268,7 +267,6 @@ while runing:
                     break
 
             #Button ALGORITHM
-            #1225,260,170,50
             elif (1225 <= x_mouse <= 1225 + 170 and 260 <= y_mouse <= 260 + 50):
                 try:
                     error = 0
@@ -301,7 +299,6 @@ while runing:
                 continue
             
             #Button reset
-            #1225,380,170,50
             elif (1225 <= x_mouse <= 1225 + 170 and 380 <= y_mouse <= 380 + 50):
                 try: 
                     points = []
@@ -318,33 +315,17 @@ while runing:
                 except:
                     print("Error")
                     break
+
             #button IMG
-            # 1225,440,170,50
             elif (1225 <= x_mouse <= 1225 + 170 and 440 <= y_mouse <= 440 + 50):
-                # import read_dir_img_kmeans
                 import img_kmeans
                 print("IMG")
 
             else:
                 print("Error")
                 continue
-    k_button = font1.render("n_clusters = " + str(k), True, colors.BLACK)          
-    dau_cong = font2.render("+", True, colors.BLACK)
-    dau_tru = font3.render("-", True, colors.BLACK)
-    random_button = font1.render("RANDOM", True, colors.BLACK)
-    algorithm_button = font1.render("ALGORITHM", True, colors.BLACK)
-    # if (error_min == []):
-
+    k_button = font1.render("n_clusters = " + str(k), True, colors.BLACK)         
     error_button = font.render("ERROR = "  + str(int(error)), True, colors.BLACK)
-    reset_button = font1.render("RESET" , True, colors.BLACK)
-    run_button = font1.render("RUN" , True, colors.BLACK)
-    img_button = font1.render("IMG" , True, colors.BLACK)
-    x = font.render("X", True, colors.BLACK)
-    y = font.render("Y", True, colors.BLACK)
-    O = font.render("0", True, colors.BLACK)
-    screen.blit(x, (1100, 605))
-    screen.blit(y, (30, 35))
-    screen.blit(O, (35, 590))
     name_button = Name_button(random_button,
                               algorithm_button,
                               error_button,
@@ -354,8 +335,8 @@ while runing:
                               dau_cong,
                               dau_tru,
                               img_button)
+    
     name_button.show_name_button()
-
     draw_clusters = Draw_clusters(clusters, COLORS_LABELS)
     draw_clusters.draw_clusters()
 

@@ -4,6 +4,7 @@ const_int_mod = int(10**4)
 height = 1400
 witd = 750
 screen = pygame.display.set_mode((height,witd))
+
 class COLORS:
     def __init__(self):
         self.BACKGROUND = (255,255,255)

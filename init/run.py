@@ -29,9 +29,6 @@ class Text:
         screen.blit(self.svm,(650,470))
 
 pygame.init()
-# height = 1200
-# witd = 700
-# screen = pygame.display.set_mode((height,witd))
 clock = pygame.time.Clock()
 runing = True
 font = pygame.font.SysFont('sans', 20)
