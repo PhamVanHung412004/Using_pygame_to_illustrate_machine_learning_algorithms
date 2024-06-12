@@ -2,7 +2,7 @@ from init_class import pygame,COLORS
 from sklearn.cluster import KMeans
 import cv2
 import os
-import numpy
+import numpy as np
 from functools import cache
 # from init_class import Binary_Search
 #test
@@ -24,9 +24,12 @@ def train_model(index,k):
     clusters = kmeans.cluster_centers_
     labels_reshaped = labels.reshape(width, height)
     img2 = clusters[labels_reshaped]
-    
-    return img2
+    img2 = list(img2)
+    yield img2
 
+def format_array(arr):
+    # if (arr[0] != []):
+    return arr[len(arr) - 1]
 path_img_kmeans = "G:/My Drive/Colab Notebooks/computer_vison/list_img"
 list_img = os.listdir(path_img_kmeans)
 
@@ -190,10 +193,17 @@ while runing:
                     k -= 1  
 
             elif (1225 <= x_mouse <= 1225 + 170 and 140 <= y_mouse <= 140 + 50):
+                #format arr
                 img2 = train_model(index,k)
+                img2 = list(img2)                
+                img2 = format_array(img2)
+                img2 = np.array(img2)
+                print(len(img2))
+                print(type(img2))
+                # img2 = list(img2)
+
                 name_img = list_test[index - 1]
-                index_test = name_img.index(".")
-                
+                index_test = name_img.index(".")                
                 cv2.imwrite(file_img_test + str(stt_img) + name_img[index_test:], img2)
                 img_ouput.append(str(cnt) + name_img[index_test:])
                 cnt += 1            
@@ -227,12 +237,14 @@ while runing:
             image = pygame.transform.scale(image, shape)
             screen.blit(image, (60, 80))            
         else:
-            ...
+            pass
     if (run_kmeans):
         image1 = pygame.image.load(path2 + "/" + img_ouput[len(img_ouput) - 1])
         image1 = pygame.transform.scale(image1, shape)
         screen.blit(image1,(665, 80))
-
+    else:
+        pass
+     
     button_selection = font1.render(str(index) , True, colors.BLACK)
     button_n_clusters = font1.render("n_clusters = " + str(k) , True, colors.BLACK)
     show_text = Text(button_n_clusters,
@@ -247,6 +259,5 @@ while runing:
 
     pygame.display.flip()
 pygame.quit()
-# print(check)
 if (check111):
     import backgroup3   
